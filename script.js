@@ -13,7 +13,7 @@ let tiles;
 let cube;
 
 let winning_page = false;
-let random_mode = false;
+let random_mode = true;
 
 
 function openModalFromButton(event, content) {
