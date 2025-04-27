@@ -5,8 +5,8 @@ import {getGlobalElapsedTime} from '../globalTimer.js';
 
 let scene, camera, renderer, material, mesh;
 
-init();
-animate();
+let animating = false;
+let animationId;
 
 function init() {
   // Create scene and camera
@@ -41,10 +41,12 @@ function init() {
   mesh = new THREE.Mesh(geometry, material);
   scene.add(mesh);
 
-  window.addEventListener('load', () => {
-    updateShaderSize();
-    updateShaderPosition();
-  });
+  // window.addEventListener('load', () => {
+  //   updateShaderSize();
+  //   updateShaderPosition();
+  // });
+  updateShaderSize();
+  updateShaderPosition();
 
   window.addEventListener('resize', updateShaderSize, false);
   window.addEventListener('scroll', updateShaderPosition, false);
@@ -80,21 +82,48 @@ function updateShaderPosition() {
   }
 
 
-  const heroSection = document.querySelector('.hero');
+const heroSection = document.querySelector('.hero');
 
-  heroSection.addEventListener('mousemove', (event) => {
-    const rect = heroSection.getBoundingClientRect();
-    material.uniforms.iMouse.value.x = event.clientX - rect.left;
-    material.uniforms.iMouse.value.y = rect.bottom - event.clientY;
-  });
+heroSection.addEventListener('mousemove', (event) => {
+  const rect = heroSection.getBoundingClientRect();
+  material.uniforms.iMouse.value.x = event.clientX - rect.left;
+  material.uniforms.iMouse.value.y = rect.bottom - event.clientY;
+});
   
 
   
-  function animate() {
-    requestAnimationFrame(animate);
-    material.uniforms.iTime.value = getGlobalElapsedTime();
+function animate() {
+  if(!animating) return;
+
+  animationId = requestAnimationFrame(animate);
+  material.uniforms.iTime.value = getGlobalElapsedTime();
   
-    renderer.render(scene, camera);
+  renderer.render(scene, camera);
+}
+  
+
+function startCosmicShader() {
+  init();
+
+  animating = true;
+  animate();
+}
+  
+  
+function pauseCosmicShader() {
+  animating = false;
+  if (animationId) {
+    cancelAnimationFrame(animationId);
   }
+}
   
-  
+
+function resumeCosmicShader() {
+  if (!animating) {
+    animating = true;
+    animate();
+  }
+}
+
+
+export {startCosmicShader, pauseCosmicShader, resumeCosmicShader};

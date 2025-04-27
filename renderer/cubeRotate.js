@@ -5,6 +5,9 @@ import {getGlobalElapsedTime} from '../globalTimer.js';
 
 let scene, camera, renderer, material, mesh;
 
+let animating = false;
+let animationId;
+
 function init() {
   // Create scene and camera
   scene = new THREE.Scene();
@@ -63,16 +66,35 @@ function updateShaderSize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
+  if (!animating) return; 
+
+  animationId = requestAnimationFrame(animate);
 
   material.uniforms.iTime.value = getGlobalElapsedTime(); 
 
   renderer.render(scene, camera);
 }
 
-export function startCubeShader() {
+function startCubeShader() {
   init();
+  
+  animating = true;
   animate();
 }
+
+
+function pauseCubeShader() {
+  animating = false;
+  if (animationId) {
+    cancelAnimationFrame(animationId);
+  }
+}
+
+function resumeCubeShader() {
+  if (!animating) {
+    animating = true;
+    animate();
+  }
+}
   
-export { renderer, material, updateShaderSize};
+export { startCubeShader, pauseCubeShader, resumeCubeShader, renderer, material, updateShaderSize};

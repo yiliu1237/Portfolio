@@ -8,8 +8,7 @@ let visibleDuration = 0; // measured in seconds
 const fadeTriggerTime = 1.5; // how many seconds user must watch
 let previousTimestamp = performance.now();
 
-init();
-animate();
+let animating = true;
 
 function init() {
   // Create scene and camera
@@ -101,33 +100,41 @@ function updateShaderPosition() {
 
 
 
-  function animate() {
-    requestAnimationFrame(animate);
+function animate() {
+  if(!animating) return;
 
-    updateShaderSize(); //keep starfield coverage when constantly resizing 
-    updateShaderPosition(); //keep starfield coverage when constantly resizing 
+  console.log("gilitteryFlow shader animating");
+
+  requestAnimationFrame(animate);
+
+  updateShaderSize(); //keep starfield coverage when constantly resizing 
+  updateShaderPosition(); //keep starfield coverage when constantly resizing 
   
-    const currentTimestamp = performance.now();
-    const deltaSeconds = (currentTimestamp - previousTimestamp) / 1000.0;
-    previousTimestamp = currentTimestamp;
+  const currentTimestamp = performance.now();
+  const deltaSeconds = (currentTimestamp - previousTimestamp) / 1000.0;
+  previousTimestamp = currentTimestamp;
   
-    material.uniforms.iTime.value += deltaSeconds;
+  material.uniforms.iTime.value += deltaSeconds;
   
-    // Count how long grid is visible
-    if (gridVisible && !fadeStarted) {
-      visibleDuration += deltaSeconds;
-      if (visibleDuration >= fadeTriggerTime) {
-        fadeStarted = true;
-      }
+  // Count how long grid is visible
+  if (gridVisible && !fadeStarted) {
+    visibleDuration += deltaSeconds;
+    if (visibleDuration >= fadeTriggerTime) {
+      fadeStarted = true;
     }
-  
-    // Start fade once triggered
-    if (fadeStarted) {
-      material.uniforms.fadeAmount.value -= 0.01;
-      material.uniforms.fadeAmount.value = Math.max(material.uniforms.fadeAmount.value, 0.0);
-    }
-  
-    renderer.render(scene, camera);
   }
   
+  // Start fade once triggered
+  if (fadeStarted) {
+    material.uniforms.fadeAmount.value -= 0.01;
+    material.uniforms.fadeAmount.value = Math.max(material.uniforms.fadeAmount.value, 0.0);
+  }
+
+  if(material.uniforms.fadeAmount.value < 0.0001) animating = false;
   
+  renderer.render(scene, camera);
+}
+  
+  
+init();
+animate();

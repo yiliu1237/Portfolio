@@ -1,6 +1,12 @@
-import {startCubeShader, renderer as cubeRenderer, material as cubeMaterial, updateShaderSize as updateCubeShaderSize} from './renderer/cubeRotate.js';
+import {startCubeShader, pauseCubeShader, resumeCubeShader, renderer as cubeRenderer, material as cubeMaterial, updateShaderSize as updateCubeShaderSize} from './renderer/cubeRotate.js';
 
-import { fadeInShader, fadeOutShader, changeHeadingColor, changeItemBoxShadow} from './renderer/glitteryFlow_gridBackground.js';
+import {startCosmicShader, pauseCosmicShader, resumeCosmicShader} from './renderer/cosmicFlow.js';
+import {startCosmicPaddingShader, pauseCosmicPaddingShader, resumeCosmicPaddingShader} from './renderer/cosmicFlow_padding.js';
+
+import {startGlitteryBGShader, pauseGlitteryBGShader, resumeGlitteryBGShader, fadeInShader, fadeOutShader, changeHeadingColor, changeItemBoxShadow} from './renderer/glitteryFlow_gridBackground.js';
+
+import { projectDetails } from './projectDetails.js';
+
 
 const items = Array.from(document.querySelectorAll('.item'));
 
@@ -13,30 +19,59 @@ let tiles;
 let cube;
 
 let winning_page = false;
-let random_mode = true;
+let random_mode = false; //for debugging
 
 
-function openModalFromButton(event, content) {
-  console.log("click icon!")
+function openDetailsPage(event, projectName) {
+  console.log("click icon!", projectName);
   event.stopPropagation();
-  openModal(content);
+
+  const contentMarkdown = projectDetails[projectName];
+  const detailsPage = document.getElementById('details-page');
+  const detailsContent = document.getElementById('details-content');
+
+  if (contentMarkdown) {
+    // Parse markdown into HTML using marked.js
+    detailsContent.innerHTML = marked.parse(contentMarkdown);
+  } else {
+    detailsContent.innerHTML = "<p>No details available for this project yet.</p>";
+  }
+
+  document.body.style.overflow = 'hidden'; // lock background scroll
+
+  document.getElementById('portfolio').style.opacity = '0.2'; // Dim the background
+  detailsPage.style.display = 'block';
+  requestAnimationFrame(() => {
+    detailsPage.style.opacity = '1';
+  });
+
+
+  pauseCubeShader();
+  pauseCosmicShader();
+  pauseCosmicPaddingShader();
+  pauseGlitteryBGShader();
 }
 
-function openModal(content) {
-  const modal = document.getElementById('popup-modal');
-  const modalBody = document.getElementById('modal-body');
 
-  modalBody.innerHTML = content; // Insert your dynamic project content
-  modal.classList.remove('hidden');
-}
+window.openDetailsPage = openDetailsPage; //happens before the page loads all buttons.
 
-function closeModal() {
-  const modal = document.getElementById('popup-modal');
-  modal.classList.add('hidden');
-}
 
-window.openModalFromButton = openModalFromButton;
-window.closeModal = closeModal;
+document.getElementById('back-button').addEventListener('click', () => {
+  const detailsPage = document.getElementById('details-page');
+  detailsPage.style.opacity = '0';
+
+  document.body.style.overflow = 'auto'; // unlock background scroll
+
+  setTimeout(() => {
+    detailsPage.style.display = 'none';
+    document.getElementById('portfolio').style.opacity = '1'; // Restore background
+  }, 500); // Match the transition time
+
+  resumeCubeShader();
+  resumeCosmicShader();
+  resumeCosmicPaddingShader();
+  resumeGlitteryBGShader();
+});
 
 
 //random width for each grid
@@ -138,6 +173,8 @@ function generateSolvableTiles({
   isRandom = true
 } = {}){
 
+  console.log("random mode: ", random_mode);
+
   do {
     if(isRandom){
       shuffleArray(items);
@@ -209,9 +246,11 @@ window.addEventListener('DOMContentLoaded', () => {
     render();
 
     startCubeShader();
+    startCosmicShader();
+    startCosmicPaddingShader();
+    startGlitteryBGShader();
 
     updateCubeShaderSize();
-
 
       // Handle click to move
     tiles.forEach(tile => { 
@@ -246,11 +285,17 @@ window.addEventListener('DOMContentLoaded', () => {
             fadeInShader();
             changeHeadingColor('rgba(255, 255, 255, 1)');
             changeItemBoxShadow('0 0 8px 3px rgba(255, 255, 255, 0.7)');
+
+            document.getElementById('hint').style.opacity = 0;
+
             winning_page = true;
           }else if(winning_page){
             fadeOutShader();
             changeHeadingColor('rgba(51, 51, 51, 1)');
             changeItemBoxShadow('0 2px 6px rgba(0, 0, 0, 0.3)');
+
+            document.getElementById('hint').style.opacity = 1;
+
             winning_page = false;
           }
         }

@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Graphic Designer Portfolio</title>
+  <title>Graphic Design Portfolio</title>
   <link rel="stylesheet" href="styles.css">
   <link href="https://fonts.googleapis.com/css2?family=Helvetica&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
   <header>
@@ -26,8 +27,8 @@
     <div id="hero-shader" class="shader-background"></div>
 
     <div class="container">
-      <h1>Graphic Designer</h1>
-      <p>online portfolio</p>
+      <h1>Web Design Portfolio</h1>
+      <p>"Design is thinking made visual."</p>
       <a href="#portfolio" class="btn">View My Work</a>
     </div>
   </section>
@@ -35,9 +36,12 @@
   <section id="about" class="about">
     <div class="container">
       <h2>About Me</h2>
-      <p>XXXXXXXXXX</p>
+      <p>I am a Master's student at the University of Pennsylvania, specializing in Computer Graphics, 3D Vision, and Game Design.</p>
+      <p>With hands-on experience in C++, Python, OpenGL, Unreal Engine, and Houdini, I am passionate about crafting experiences that are both visually compelling and technically robust. I enjoy exploring real-time rendering, physically based simulations, and procedural content generation.</p>
+      <p>At the core of my goal is a desire to bridge the gap between vitality and the physical world - bringing digital environments to life with a sense of authenticity, energy, and emotional impact. In the future, I aspire to work at the intersection of graphics technology and 3D vision.</p>
     </div>
   </section>
+  
 
   
   <section id="portfolio" class="portfolio">
@@ -49,7 +53,7 @@
         <div class="item p1">
           <div class="label">
             <span>Project 1</span>
-            <button class="open-button" onclick="openModalFromButton(event, 'Project 1 Details')">
+            <button class="open-button" title="See more details" onclick="openDetailsPage(event, 'Project 1 Details')">
               <img src="images/magnifying_glass_icon.png" alt="Open Project" class="icon-image">
             </button>
           </div>
@@ -58,7 +62,7 @@
         <div class="item p2">
           <div class="label">
             <span>Project 2</span>
-            <button class="open-button" onclick="openModalFromButton(event, 'Project 2 Details')">
+            <button class="open-button" title="See more details" onclick="openDetailsPage(event, 'Project 2 Details')">
               <img src="images/magnifying_glass_icon.png" alt="Open Project" class="icon-image">
             </button>
           </div>
@@ -67,7 +71,7 @@
         <div class="item p3">
           <div class="label">
             <span>Project 3</span>
-            <button class="open-button" onclick="openModalFromButton(event, 'Project 3 Details')">
+            <button class="open-button" title="See more details" onclick="openDetailsPage(event, 'Project 3 Details')">
               <img src="images/magnifying_glass_icon.png" alt="Open Project" class="icon-image">
             </button>
           </div>
@@ -76,7 +80,7 @@
         <div class="item p4">
           <div class="label">
             <span>Project 4</span>
-            <button class="open-button" onclick="openModalFromButton(event, 'Project 4 Details')">
+            <button class="open-button" title="See more details" onclick="openDetailsPage(event, 'Project 4 Details')">
               <img src="images/magnifying_glass_icon.png" alt="Open Project" class="icon-image">
             </button>
           </div>
@@ -85,7 +89,7 @@
         <div class="item p5">
           <div class="label">
             <span>Project 5</span>
-            <button class="open-button" onclick="openModalFromButton(event, 'Project 5 Details')">
+            <button class="open-button" title="See more details" onclick="openDetailsPage(event, 'Project 5 Details')">
               <img src="images/magnifying_glass_icon.png" alt="Open Project" class="icon-image">
             </button>
           </div>
@@ -94,7 +98,7 @@
         <div class="item p6">
           <div class="label">
             <span>Project 6</span>
-            <button class="open-button" onclick="openModalFromButton(event, 'Project 6 Details')">
+            <button class="open-button" title="See more details" onclick="openDetailsPage(event, 'Project 6 Details')">
               <img src="images/magnifying_glass_icon.png" alt="Open Project" class="icon-image">
             </button>
           </div>
@@ -103,7 +107,7 @@
         <div class="item p7">
           <div class="label">
             <span>Project 7</span>
-            <button class="open-button" onclick="openModalFromButton(event, 'Project 7 Details')">
+            <button class="open-button" title="See more details" onclick="openDetailsPage(event, 'Project 7 Details')">
               <img src="images/magnifying_glass_icon.png" alt="Open Project" class="icon-image">
             </button>
           </div>
@@ -112,7 +116,7 @@
         <div class="item p8">
           <div class="label">
             <span>Project 8</span>
-            <button class="open-button" onclick="openModalFromButton(event, 'Project 8 Details')">
+            <button class="open-button" title="See more details" onclick="openDetailsPage(event, 'Project 8 Details')">
               <img src="images/magnifying_glass_icon.png" alt="Open Project" class="icon-image">
             </button>
           </div>
@@ -125,6 +129,9 @@
     </div>
 
     <div id="grid-bg-shader" class="shader-background"></div>
+
+    <div id="hint"><br>The world shifts for those who solve the puzzle.</div>
+
   </section>
   
   
@@ -148,14 +155,14 @@
   </div>
 
 
-  <!-- <div id="popup-modal" class="modal hidden">
-    <div class="modal-content">
-      <span class="close-button" onclick="closeModal()">×</span>
-      <div id="modal-body">
-
-      </div>
+<section id="details-page" class="hidden">
+  <div class="container">
+    <button id="back-button" class="btn">Back</button>
+    <div id="details-content">
+      <!-- dynamic project details go here -->
     </div>
-  </div> -->
+  </div>
+</section>
 
   <script type="module" src="script.js"></script>
   <script type="module" src="renderer/glitteryFlow.js"></script>
@@ -163,5 +170,6 @@
   <script type="module" src="renderer/cosmicFlow.js"></script>
   <script type="module" src="renderer/cosmicFlow_padding.js"></script>
   <script type="module" src="renderer/cubeRotate.js"></script>
+  <script type="module" src="projectDetails.js"></script>
 </body>
 </html>

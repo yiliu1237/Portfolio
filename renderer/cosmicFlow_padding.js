@@ -5,8 +5,8 @@ import {getGlobalElapsedTime} from '../globalTimer.js';
 
 let scene, camera, renderer, material, mesh;
 
-init();
-animate();
+let animating = false;
+let animationId;
 
 function init() {
   // Create scene and camera
@@ -41,10 +41,9 @@ function init() {
   mesh = new THREE.Mesh(geometry, material);
   scene.add(mesh);
 
-  window.addEventListener('load', () => {
-    updateShaderSize();
-  });
 
+  updateShaderSize();
+  
   window.addEventListener('resize', updateShaderSize, false);
 }
 
@@ -63,12 +62,39 @@ function updateShaderSize() {
 }
 
   
-  function animate() {
-    requestAnimationFrame(animate);
+function animate() {
+  if(!animating) return;
+
+  requestAnimationFrame(animate);
   
-    material.uniforms.iTime.value = getGlobalElapsedTime();
+  material.uniforms.iTime.value = getGlobalElapsedTime();
   
-    renderer.render(scene, camera);
+  renderer.render(scene, camera);
+}
+  
+  
+function startCosmicPaddingShader() {
+  init();
+  
+  animating = true;
+  animate();
+}
+    
+    
+function pauseCosmicPaddingShader() {
+  animating = false;
+  if (animationId) {
+    cancelAnimationFrame(animationId);
   }
+}
+    
+  
+function resumeCosmicPaddingShader() {
+  if (!animating) {
+    animating = true;
+    animate();
+  }
+}
   
   
+export {startCosmicPaddingShader, pauseCosmicPaddingShader, resumeCosmicPaddingShader};

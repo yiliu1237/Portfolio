@@ -1,7 +1,7 @@
-const globalStartTime = performance.now();
+let globalStartTime = performance.now();
 
 function getGlobalElapsedTime() {
     return (performance.now() - globalStartTime) / 1000.0;
 }
 
-export { getGlobalElapsedTime };
+export { getGlobalElapsedTime};

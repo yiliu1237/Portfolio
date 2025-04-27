@@ -5,8 +5,8 @@ import {getGlobalElapsedTime} from '../globalTimer.js';
 
 let scene, camera, renderer, material, mesh;
 
-init();
-animate();
+let animating = false;
+let animationId;
 
 function init() {
   scene = new THREE.Scene();
@@ -41,10 +41,12 @@ function init() {
     updateShaderPosition();
   });
 
-  window.addEventListener('resize', () => {
-    updateShaderSize();
-    updateShaderPosition();
-  });
+  // window.addEventListener('resize', () => {
+  //   updateShaderSize();
+  //   updateShaderPosition();
+  // });
+  updateShaderSize();
+  updateShaderPosition();
 
   window.addEventListener('scroll', updateShaderPosition, false);
 }
@@ -122,11 +124,38 @@ function changeItemBoxShadow(shadowValue) {
 
 
 function animate() {
-  requestAnimationFrame(animate);
+  if(!animating) return;
+  animationId = requestAnimationFrame(animate);
 
   material.uniforms.iTime.value = getGlobalElapsedTime();
   renderer.render(scene, camera);
 }
 
 
-export { fadeInShader, fadeOutShader, changeHeadingColor, changeItemBoxShadow};
+
+function startGlitteryBGShader() {
+  init();
+
+  animating = true;
+  animate();
+}
+  
+  
+function pauseGlitteryBGShader() {
+  animating = false;
+  if (animationId) {
+    cancelAnimationFrame(animationId);
+  }
+}
+  
+
+function resumeGlitteryBGShader() {
+  if (!animating) {
+    animating = true;
+    animate();
+  }
+}
+
+
+
+export {startGlitteryBGShader, pauseGlitteryBGShader, resumeGlitteryBGShader, fadeInShader, fadeOutShader, changeHeadingColor, changeItemBoxShadow};
