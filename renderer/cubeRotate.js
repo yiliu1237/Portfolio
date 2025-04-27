@@ -40,13 +40,17 @@ function init() {
   mesh = new THREE.Mesh(geometry, material);
   scene.add(mesh);
 
-  window.addEventListener('DOMContentLoaded', () => {
-    requestAnimationFrame(() => {
-      updateCubeShaderSize(); // after full layout
-    });
+  // window.addEventListener('DOMContentLoaded', () => {
+  //   requestAnimationFrame(() => {
+  //     updateCubeShaderSize(); // after full layout
+  //   });
+  // });
+  requestAnimationFrame(() => { //makes sure page is painted and sized.
+    updateShaderSize(); //after one frame
   });
   
   window.addEventListener('resize', updateShaderSize);
+
 }
 
 
@@ -65,8 +69,11 @@ function updateShaderSize() {
     material.uniforms.iResolution.value.set(rect.width, rect.height);
 }
 
+
 function animate() {
   if (!animating) return; 
+
+  //console.log("cube shader animating"); /// for debugging 
 
   animationId = requestAnimationFrame(animate);
 
@@ -77,7 +84,20 @@ function animate() {
 
 function startCubeShader() {
   init();
+
+  const cubeObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        resumeCubeShader();
+      } else {
+        pauseCubeShader();
+      }
+    });
+  }, { threshold: 0.0 });
   
+  cubeObserver.observe(document.querySelector('.item.cube'));
+  
+
   animating = true;
   animate();
 }
@@ -96,5 +116,7 @@ function resumeCubeShader() {
     animate();
   }
 }
+
+
   
 export { startCubeShader, pauseCubeShader, resumeCubeShader, renderer, material, updateShaderSize};

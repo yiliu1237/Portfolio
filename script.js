@@ -19,7 +19,9 @@ let tiles;
 let cube;
 
 let winning_page = false;
-let random_mode = false; //for debugging
+let random_mode = true; //for debugging
+
+let glitteryShaderStarted = false;
 
 
 function openDetailsPage(event, projectName) {
@@ -70,7 +72,8 @@ document.getElementById('back-button').addEventListener('click', () => {
   resumeCubeShader();
   resumeCosmicShader();
   resumeCosmicPaddingShader();
-  resumeGlitteryBGShader();
+  
+  if(winning_page) resumeGlitteryBGShader();
 });
 
 
@@ -248,7 +251,6 @@ window.addEventListener('DOMContentLoaded', () => {
     startCubeShader();
     startCosmicShader();
     startCosmicPaddingShader();
-    startGlitteryBGShader();
 
     updateCubeShaderSize();
 
@@ -286,17 +288,33 @@ window.addEventListener('DOMContentLoaded', () => {
             changeHeadingColor('rgba(255, 255, 255, 1)');
             changeItemBoxShadow('0 0 8px 3px rgba(255, 255, 255, 0.7)');
 
+            if (!glitteryShaderStarted) {
+              startGlitteryBGShader();
+              glitteryShaderStarted = true;
+            } else {
+              resumeGlitteryBGShader();
+            }
+
             document.getElementById('hint').style.opacity = 0;
 
             winning_page = true;
+
           }else if(winning_page){
+            document.querySelector('.custom-grid').classList.add('disabled');
+
             fadeOutShader();
             changeHeadingColor('rgba(51, 51, 51, 1)');
             changeItemBoxShadow('0 2px 6px rgba(0, 0, 0, 0.3)');
 
-            document.getElementById('hint').style.opacity = 1;
+            document.getElementById('hint').style.opacity = 1; //prevent user toggling between from winning to break winning 
 
             winning_page = false;
+
+            setTimeout(() => {
+              pauseGlitteryBGShader();
+              document.querySelector('.custom-grid').classList.remove('disabled');
+            }, 3000); // 3s
+
           }
         }
       });

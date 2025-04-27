@@ -49,6 +49,19 @@ function init() {
   updateShaderPosition();
 
   window.addEventListener('scroll', updateShaderPosition, false);
+
+
+  const glitteryBGObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        resumeGlitteryBGShader();
+      } else {
+        pauseGlitteryBGShader();
+      }
+    });
+  }, { threshold: 0.0});
+  
+  glitteryBGObserver.observe(document.getElementById('grid-bg-shader'));
 }
 
 
@@ -125,6 +138,9 @@ function changeItemBoxShadow(shadowValue) {
 
 function animate() {
   if(!animating) return;
+
+  //console.log("glittery bg shader animating");/// for debugging
+
   animationId = requestAnimationFrame(animate);
 
   material.uniforms.iTime.value = getGlobalElapsedTime();

@@ -65,6 +65,8 @@ function updateShaderSize() {
 function animate() {
   if(!animating) return;
 
+  //console.log("cosmic padding shader animating"); /// for debugging
+
   requestAnimationFrame(animate);
   
   material.uniforms.iTime.value = getGlobalElapsedTime();
@@ -75,7 +77,19 @@ function animate() {
   
 function startCosmicPaddingShader() {
   init();
+
+  const cosmicPaddingObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        resumeCosmicPaddingShader();
+      } else {
+        pauseCosmicPaddingShader();
+      }
+    });
+  }, { threshold: 0.0});
   
+  cosmicPaddingObserver.observe(document.getElementById('padding-shader'));
+
   animating = true;
   animate();
 }

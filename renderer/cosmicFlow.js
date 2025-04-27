@@ -94,6 +94,7 @@ heroSection.addEventListener('mousemove', (event) => {
   
 function animate() {
   if(!animating) return;
+  //console.log("cosmic shader animating"); ///for debugging
 
   animationId = requestAnimationFrame(animate);
   material.uniforms.iTime.value = getGlobalElapsedTime();
@@ -104,6 +105,18 @@ function animate() {
 
 function startCosmicShader() {
   init();
+
+  const cosmicObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        resumeCosmicShader();
+      } else {
+        pauseCosmicShader();
+      }
+    });
+  }, { threshold: 0.0});
+  
+  cosmicObserver.observe(document.getElementById('hero-shader'));
 
   animating = true;
   animate();
@@ -124,6 +137,7 @@ function resumeCosmicShader() {
     animate();
   }
 }
+
 
 
 export {startCosmicShader, pauseCosmicShader, resumeCosmicShader};
