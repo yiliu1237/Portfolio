@@ -128,11 +128,6 @@ This app combines a clock, focus timer, and mushroom collection system to encour
 
 ---
 
-# Grow your forest, collect mushrooms, and master the art of focus! 
-
-
----
-
 ## More Details 
 
 Please check the website:  <a href="https://yiliu1237.github.io/FungiClock" target="_blank">FungiClock</a>
@@ -169,9 +164,62 @@ ConfTrack does not store your data - it simply redirects you to IFTTT for managi
 ## More Details 
 
 Please check the website: <a href="https://yiliu1237.github.io/ConfTrack" target="_blank">ConfTrack</a>
-`
+`,
 ///////////////////////////////// Project 4 ///////////////////////////////////
 
-  };
+
+
+
+
+
+
+
+
+
+
+///////////////////////////////// Project 4 ///////////////////////////////////
+"Project 5 Details": `
+# EchoGem
+
+**EchoGem** is an interactive WebGL-based experience where your memories take the form of shimmering crystals.  
+Move through a dynamic 3D space, reflect on your thoughts, and capture them as beautiful geometric artifacts.
+
+---
+
+## Preview
+
+![Preview](https://raw.githubusercontent.com/yiliu1237/EchoGem/main/demo/preview.gif)
+
+---
+
+## How to Play
+
+- **Move**: \`W A S D\`
+- **Zoom**: \`Z\` (Zoom in) / \`X\` (Zoom out)
+- **Mouse**: Hold and drag to change the camera direction.
+- **Enter Gem Library**: Press \`Space\`
+- **Slide Crystals**: Use \`Left\` and \`Right\` arrow keys
+
+---
+
+## Features
+
+- Procedural crystal generation
+- Dynamic WebGL shader animation
+- Smooth UI overlay transitions
+- Lightweight and responsive
+
+---
+
+## More Details 
+
+Please check the website: <a href="https://yiliu1237.github.io/EchoGem" target="_blank">EchoGem</a>
+
+`
+
+
+
+
+};
 
   

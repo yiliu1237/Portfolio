@@ -34,12 +34,13 @@ body {
   header nav ul li a {
     text-decoration: none;
     color: #333;
+    font-size: 1.2rem;
   }
   
   .hero {
     background: #f4f4f4;
     text-align: center;
-    padding: 100px 20px;
+    padding: 15vh 2vw;
   }
 
   #hero-shader {
@@ -255,7 +256,7 @@ body {
 
 
   #hint {
-    margin-top: 40px; 
+    /* margin-top: 1.3rem;  */
     font-size: 1.3rem;
     color: #2e2929ec;
     transition: opacity 1.2s ease; 
@@ -266,7 +267,7 @@ body {
   .hidden {
     display: none;
   }
-  
+/*   
   #details-page {
     position: fixed;
     top: 5%;
@@ -279,10 +280,28 @@ body {
     border-radius: 16px;
     z-index: 1000;
     overflow: auto; 
-    display: none;
     opacity: 0;
     transition: opacity 0.5s ease, transform 0.5s ease;
     transform: scale(0.95);
+  } */
+
+
+  #details-page {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.95);
+    width: 80%;
+    /* max-width: 800px; */
+    max-height: 90vh;
+    background: white;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    padding: 40px;
+    border-radius: 16px;
+    z-index: 1000;
+    overflow-y: auto;
+    opacity: 0;
+    transition: opacity 0.5s ease, transform 0.5s ease;
   }
 
 
@@ -346,4 +365,22 @@ body {
     border-radius: 8px;
     z-index: 10;       
     cursor: pointer;
+}
+
+
+
+header .logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo-icon {
+  height: 3rem; 
+  width: auto;   
+  /* margin-right: 0.1rem; */
+  object-fit: contain;
+}
+.logo-text {
+  font-weight: bold;
+  font-size: 1.8rem;  
 }
