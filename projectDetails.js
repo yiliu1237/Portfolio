@@ -300,7 +300,13 @@ It allows you to dynamically control the fractal's shape, color themes, and zoom
 | \`Apply\` Button | Set custom fractal power and stop animation |
 | \`Resume Animation\` Button | Resume automatic oscillation |
 | Theme Buttons | Switch between color themes |
-| Custom Colors Section | Manually define and apply RGB colors |`
+| Custom Colors Section | Manually define and apply RGB colors |
+
+---
+
+## More Details 
+
+Please check the website:  <a href="https://yiliu1237.github.io/dynamic_newton_fractal" target="_blank">Newton Fractal Explorer</a>`
 
 
 };
